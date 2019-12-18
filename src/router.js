@@ -3,6 +3,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import HelloWorld from '@/components/HelloWorld';
 import login from '@/components/login';
+import home from '@/components/home';
+import questionaireList from '@/components/questionaireList';
+import questionaire from '@/components/questionaire';
  
 Vue.use(Router)
 
@@ -18,6 +21,18 @@ const router = new Router({
         {
             path: '/login',
             component: login
+        },
+        {
+            path: '/home',
+            component: home
+        },
+        {
+            path: '/questionairelist',
+            component: questionaireList
+        },
+        {
+            path: '/questionaire',
+            component: questionaire
         }
     ]
 })

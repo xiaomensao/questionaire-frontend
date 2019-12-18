@@ -1,19 +1,25 @@
 <template>
     <div id="login">
-        <el-form :model="loginForm" :rules="loginRules" ref="loginForm">         
-            <h2>Ray商城登录</h2>
-            <el-form-item prop="username">
-                <el-input v-model="loginForm.username" name="username" placeholder="请输入用户名/手机号" auto-complete="on"></el-input>
-            </el-form-item>
+        <el-row type="flex" class="row-bg" justify="center">
+            <el-col :span="6">
+                <el-card class="box-card">
+                    <el-form :model="loginForm" :rules="loginRules" ref="loginForm">         
+                        <h2>登录</h2>
+                        <el-form-item prop="username">
+                            <el-input v-model="loginForm.username" name="username" placeholder="请输入用户名" auto-complete="on"></el-input>
+                        </el-form-item>
 
-            <el-form-item prop="username">
-                <el-input v-model="loginForm.password" name="password" type="password" placeholder="请输入密码" auto-complete="on"></el-input>
-            </el-form-item>
+                        <el-form-item prop="username">
+                            <el-input v-model="loginForm.password" name="password" type="password" placeholder="请输入密码" auto-complete="on"></el-input>
+                        </el-form-item>
 
-            <el-form-item>
-                <el-button type="primary" @click="handleLogin">登录</el-button>
-            </el-form-item>
-        </el-form>
+                        <el-form-item>
+                            <el-button type="primary" @click="handleLogin">登录</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -51,22 +57,24 @@ export default {
   },
 
   methods: {
-      handleLogin (){
-           this.$refs.loginForm.validate((valid) => {
-               if(valid){
-                  loginReq(this.loginForm.username,this.loginForm.password).then((res) => {
-                      console.log(res);
-                  })
-               }else{
-                   console.log('用户名或密码错误')
-               }
-           })
-      }
+    handleLogin (){
+        this.$refs.loginForm.validate((valid) => {
+            if(valid){
+                loginReq(this.loginForm.username,this.loginForm.password).then((res) => {
+                    console.log(res.data.token);
+                    window.localStorage.setItem('token', res.data.token);
+                    this.$router.push("/home");
+                })
+            }else{
+                console.log('用户名或密码错误');
+            }
+        })
+    }
   }
 };
 </script>
-<style scoped>
-.el-input {
-        width:300px;
-}    
+<style>
+#login {
+  text-align: center;
+}
 </style>
