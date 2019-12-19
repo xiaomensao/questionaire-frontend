@@ -37,7 +37,7 @@ export default {
             });
         },
         createNewQuestionaire() {
-            this.$router.push("/questionaire");
+            this.$router.push("/questionaire/-1");
         }
 
     }

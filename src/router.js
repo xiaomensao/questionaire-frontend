@@ -31,7 +31,7 @@ const router = new Router({
             component: questionaireList
         },
         {
-            path: '/questionaire',
+            path: '/questionaire/:id',
             component: questionaire
         }
     ]
