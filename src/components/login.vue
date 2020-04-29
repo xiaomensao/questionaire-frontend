@@ -9,12 +9,18 @@
                             <el-input v-model="loginForm.username" name="username" placeholder="请输入用户名" auto-complete="on"></el-input>
                         </el-form-item>
 
-                        <el-form-item prop="username">
+                        <el-form-item prop="password">
                             <el-input v-model="loginForm.password" name="password" type="password" placeholder="请输入密码" auto-complete="on"></el-input>
                         </el-form-item>
 
                         <el-form-item>
-                            <el-button type="primary" @click="handleLogin">登录</el-button>
+                            <el-tag type="danger" effect="plain" v-if="loginFail">
+                                用户名或者密码不正确！
+                            </el-tag>
+                        </el-form-item>
+
+                        <el-form-item>
+                            <el-button type="primary" @click="handleLogin" plain>登录</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>
@@ -30,6 +36,7 @@ export default {
   name: "login",
   data() {
     return {
+        loginFail: false,
         loginForm: {
             username: '',
             password: '',
@@ -38,9 +45,7 @@ export default {
             username: [
                 {
                     required: true,
-
                     message: "请输入用户名",
-
                     trigger: "blur"
                 }
             ],
@@ -63,8 +68,12 @@ export default {
                 loginReq(this.loginForm.username,this.loginForm.password).then((res) => {
                     console.log(res.data.token);
                     window.localStorage.setItem('token', res.data.token);
+                    window.localStorage.setItem('userName', this.loginForm.username);
                     this.$router.push("/home");
-                })
+                }).catch(error => {
+                    this.loginFail = true;
+                    console.log(error.response);
+                });
             }else{
                 console.log('用户名或密码错误');
             }

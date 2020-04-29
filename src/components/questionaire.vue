@@ -27,14 +27,15 @@
                 <el-button type="primary" @click="createNewQuestion">创建一个新问题</el-button>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="createNewQuestion">保存</el-button>
+                <el-button type="primary" @click="submitQuestionaire">保存</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script>
-import { getAllQuestionaireStatus, getAllQuestionType } from '@/apis/questionaire';
+import { getAllQuestionaireStatus, getAllQuestionType, 
+        saveQuestionaire, getQuestionaire, getQuestions } from '@/apis/questionaire';
 export default {
     name: 'questionaire',
     components: {
@@ -54,19 +55,31 @@ export default {
     },
 
     mounted: function() {
-        this.questionaire.id = this.$route.params.id;
+        this.loadQuestionaire();
         this.loadStatusType();
     },
 
     methods: {
+        loadQuestionaire() {
+            if (this.$route.params.id > 0) {
+                getQuestionaire(this.$route.params.id).then((res) => {
+                    Object.assign(this.questionaire, res.data);
+                    console.log(this.questionaire);
+                    getQuestions(this.$route.params.id).then((res2) => {
+                        this.$set(this.questionaire, 'questions', res2.data);
+                        console.log(this.questionaire);
+                    });
+                });
+            } 
+        },
         loadStatusType() {
             getAllQuestionaireStatus().then((res) => {
                 this.questionaireStatus = res.data;
                 console.log(this.questionaireStatus);
-            })
+            });
             getAllQuestionType().then((res) => {
                 this.questionType = res.data;
-            })
+            });
         },
         createNewQuestion() {
             let question = {
@@ -75,6 +88,13 @@ export default {
                 text: '',
             };
             this.questionaire.questions.push(question);
+        },
+        submitQuestionaire() {
+            saveQuestionaire(this.questionaire).then((res) => {
+                console.log('saved!');
+            }).catch(error => {
+                console.log(error.response);
+            });
         }
 
     }

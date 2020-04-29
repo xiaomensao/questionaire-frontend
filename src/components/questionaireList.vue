@@ -3,11 +3,20 @@
         <h2>问卷列表</h2>
         <el-button type="primary" @click="createNewQuestionaire">添加新的问卷</el-button>
         <p v-if="questionaireList.length == 0">目前没有问卷</p>
-        <ul id="example-1">
-            <li v-for="questionaire in questionaireList" v-bind:key="questionaire">
-                {{ questionaire }}
-            </li>
-        </ul>
+        <el-table :data="questionaireList" strip border style="width: 100%">
+            <el-table-column fixed prop="title" label="标题"></el-table-column>
+            <el-table-column prop="created" label="创建日期"></el-table-column>
+            <el-table-column prop="statusName" label="状态"></el-table-column>
+            <el-table-column
+                fixed="right"
+                label="操作"
+                width="100">
+                <template slot-scope="scope">
+                    <el-button @click="viewQuestionaire(scope.row)" type="text" size="small">预览</el-button>
+                    <el-button @click="editQuestionaire(scope.row)" type="text" size="small">编辑</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
     </div>
 </template>
 
@@ -21,7 +30,7 @@ export default {
 
     data() {
         return {
-            questionaireList: [],  
+            questionaireList: [], 
         }
     },
 
@@ -38,7 +47,13 @@ export default {
         },
         createNewQuestionaire() {
             this.$router.push("/questionaire/-1");
-        }
+        },
+        viewQuestionaire(row) {
+            this.$router.push("/questionaire/" + row.id);
+        },
+        editQuestionaire(row) {
+            this.$router.push("/questionaire/" + row.id);
+        },
 
     }
     
