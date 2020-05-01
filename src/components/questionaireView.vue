@@ -47,15 +47,15 @@
                             <el-form-item v-if="question.type <= 3">
                                 <el-input placeholder="请输入题目" v-model="question.text"></el-input>
                             </el-form-item>
-                            <radio-edit v-if="question.type == 2" v-bind:radioChoices="question.radioChoices">
-                            </radio-edit>
+                            <radio-view v-if="question.type == 2" v-bind:radioChoices="question.radioChoices">
+                            </radio-view>
                             <h4 v-if="question.type == 3">多选选项</h4>
                             <el-form-item v-if="question.type <= 3">
                                 <el-button v-if="question.type == 3" type="primary" 
                                 @click="createNewCheckbox(quesArr)">创建一个新选项</el-button>
                             </el-form-item>
-                            <checkbox-edit v-if="question.type == 4" v-bind:question="question">
-                            </checkbox-edit>
+                            <checkbox-view v-if="question.type == 4" v-bind:question="question">
+                            </checkbox-view>
                         </div>
                     </el-collapse-item>
                 </el-collapse>
@@ -67,8 +67,7 @@
             <el-card shadow="always">
                 <el-row>
                     <el-button type="primary" @click="submitQuestionaire">保存</el-button>
-                    <el-button type="primary" @click="goToView"
-                        v-if="this.$route.params.id > 0">预览</el-button>
+                    <el-button type="primary">预览</el-button>
                 </el-row>
             </el-card>
         </el-form>
@@ -93,13 +92,13 @@
 <script>
 import { getAllQuestionaireStatus, getAllQuestionType, 
         saveQuestionaire, getQuestionaire, getQuestions } from '@/apis/questionaire';
-import radioEdit from './radioEdit.vue';
-import checkboxEdit from './checkboxEdit.vue';
+import radioView from './radioView.vue';
+import checkboxView from './checkboxView.vue';
 export default {
     name: 'questionaire',
     components: {
-        radioEdit,
-        checkboxEdit,
+        radioView,
+        checkboxView,
     },
 
     data() {
@@ -237,9 +236,6 @@ export default {
                     q.order = index + 1;
                 });
             });
-        },
-        goToView() {
-            this.$router.push("/questionaireView/" + this.$route.params.id);
         }
     },
     

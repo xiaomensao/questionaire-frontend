@@ -6,6 +6,7 @@ import login from '@/components/login';
 import home from '@/components/home';
 import questionaireList from '@/components/questionaireList';
 import questionaire from '@/components/questionaire';
+import questionaireView from '@/components/questionaireView';
  
 Vue.use(Router)
 
@@ -33,6 +34,10 @@ const router = new Router({
         {
             path: '/questionaire/:id',
             component: questionaire
+        },
+        {
+            path: '/questionaireView/:id',
+            component: questionaireView
         }
     ]
 })

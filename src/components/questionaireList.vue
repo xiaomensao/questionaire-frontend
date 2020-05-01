@@ -2,7 +2,9 @@
     <div id="questionaireList">
         <h2>问卷列表</h2>
         <el-button type="primary" @click="createNewQuestionaire">添加新的问卷</el-button>
+        <br/>
         <p v-if="questionaireList.length == 0">目前没有问卷</p>
+        <br/>
         <el-table :data="questionaireList" strip border style="width: 100%">
             <el-table-column fixed prop="title" label="标题"></el-table-column>
             <el-table-column prop="created" label="创建日期"></el-table-column>
