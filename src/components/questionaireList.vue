@@ -48,13 +48,14 @@ export default {
             });
         },
         createNewQuestionaire() {
-            this.$router.push("/questionaire/-1");
-        },
-        viewQuestionaire(row) {
-            this.$router.push("/questionaire/" + row.id);
+            this.$router.push("/admin/questionaire/-1");
         },
         editQuestionaire(row) {
-            this.$router.push("/questionaire/" + row.id);
+            this.$router.push("/admin/questionaire/" + row.id);
+        },
+        viewQuestionaire(row) {
+            let viewRoute = this.$router.resolve("/questionaireView/" + row.id);
+            window.open(viewRoute.href, '_blank');
         },
 
     }

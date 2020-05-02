@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <div id="notLogin" v-if="isNotInLogin()">
+    <div id="requireLogin" v-if="requireLogin()">
       <el-container>
         <el-header id="page-header-wrapper">
           <page-header></page-header>
@@ -19,8 +19,12 @@
         </el-container>
       </el-container>
     </div>
-    <div id="login" v-else>
-      <router-view></router-view> 
+    <div id="notRequirelogin" v-else>
+      <el-container>
+        <el-main>
+          <router-view></router-view> 
+        </el-main>
+      </el-container>
     </div>
   </div>
 </template>
@@ -63,8 +67,8 @@ export default {
       pageHeader,
   },
   methods: {
-    isNotInLogin() {
-      return this.$router.history.current["path"] !== "/login";
+    requireLogin() {
+      return this.$router.history.current["path"].includes('admin');
     }
   },
 }

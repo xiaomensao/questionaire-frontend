@@ -23,3 +23,7 @@ export function getQuestionaire(id) {
 export function getQuestions(id) {
     return jsonRequest.get('question/?questionaireId=' + id);
 }
+
+export function submitResponse(response) {
+    return jsonRequest.post('responseSubmit/', response);
+}

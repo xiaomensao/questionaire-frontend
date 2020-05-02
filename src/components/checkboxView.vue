@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form-item>
-        <el-input placeholder="请输入选项" v-model="question.text"></el-input>
+      <el-checkbox v-model="response.checkbox">{{question.text}}</el-checkbox>
     </el-form-item>
   </div>
 </template>
@@ -9,7 +9,7 @@
 <script>
 export default {
   name: 'checkboxView',
-  props: ['question'],
+  props: ['question', 'response'],
   data() {
     return {
     }

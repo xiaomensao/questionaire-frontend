@@ -1,5 +1,5 @@
 <template>
-    <div id="questionaireList">
+    <div id="questionaireEdit">
         <el-steps v-bind:active="questionaire.status-1" finish-status="success" simple>
             <el-step v-for="status in questionaireStatus" v-bind:key="status.id" 
                 :title="status.name"></el-step>
@@ -29,7 +29,8 @@
                         <template slot="title">
                             <div class="collapse-title-wrapper">
                                 <div class="collapse-title">
-                                    {{'题目' + (ind + 1) + ': ' + quesArr[0].text}}
+                                    {{'题目' + (ind + 1) + ': ' + 
+                                    quesArr.find(q => q.type == 1 || q.type == 2 || q.type == 3).text}}
                                 </div>
                                 <div class="collapse-action">
                                     <el-button @click="deleteQuestion(ind)" type="text" size="small">删除</el-button>
@@ -50,7 +51,7 @@
                             <radio-edit v-if="question.type == 2" v-bind:radioChoices="question.radioChoices">
                             </radio-edit>
                             <h4 v-if="question.type == 3">多选选项</h4>
-                            <el-form-item v-if="question.type <= 3">
+                            <el-form-item v-if="question.type == 3">
                                 <el-button v-if="question.type == 3" type="primary" 
                                 @click="createNewCheckbox(quesArr)">创建一个新选项</el-button>
                             </el-form-item>
@@ -239,7 +240,8 @@ export default {
             });
         },
         goToView() {
-            this.$router.push("/questionaireView/" + this.$route.params.id);
+            let viewRoute = this.$router.resolve("/questionaireView/" + this.$route.params.id);
+            window.open(viewRoute.href, '_blank');
         }
     },
     

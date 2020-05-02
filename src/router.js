@@ -24,15 +24,15 @@ const router = new Router({
             component: login
         },
         {
-            path: '/home',
+            path: '/admin/home',
             component: home
         },
         {
-            path: '/questionairelist',
+            path: '/admin/questionairelist',
             component: questionaireList
         },
         {
-            path: '/questionaire/:id',
+            path: '/admin/questionaire/:id',
             component: questionaire
         },
         {
