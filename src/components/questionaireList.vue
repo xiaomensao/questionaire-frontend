@@ -9,13 +9,11 @@
             <el-table-column fixed prop="title" label="标题"></el-table-column>
             <el-table-column prop="created" label="创建日期"></el-table-column>
             <el-table-column prop="statusName" label="状态"></el-table-column>
-            <el-table-column
-                fixed="right"
-                label="操作"
-                width="100">
+            <el-table-column fixed="right" label="操作">
                 <template slot-scope="scope">
                     <el-button @click="viewQuestionaire(scope.row)" type="text" size="small">预览</el-button>
                     <el-button @click="editQuestionaire(scope.row)" type="text" size="small">编辑</el-button>
+                    <el-button @click="viewQuestionaireResult(scope.row)" type="text" size="small">回复</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -57,6 +55,9 @@ export default {
             let viewRoute = this.$router.resolve("/questionaireView/" + row.id);
             window.open(viewRoute.href, '_blank');
         },
+        viewQuestionaireResult(row) {
+            this.$router.push("/admin/questionaireResult/" + row.id);
+        }
 
     }
     

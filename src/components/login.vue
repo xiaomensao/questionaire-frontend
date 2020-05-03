@@ -69,7 +69,7 @@ export default {
                     console.log(res.data.token);
                     window.localStorage.setItem('token', res.data.token);
                     window.localStorage.setItem('userName', this.loginForm.username);
-                    this.$router.push("/home");
+                    this.$router.push("/admin/home");
                 }).catch(error => {
                     this.loginFail = true;
                     console.log(error.response);

@@ -21,9 +21,14 @@
     </div>
     <div id="notRequirelogin" v-else>
       <el-container>
-        <el-main>
-          <router-view></router-view> 
-        </el-main>
+        <el-header id="page-header-wrapper">
+          <page-header-not-login></page-header-not-login>
+        </el-header>
+        <el-container>
+          <el-main>
+            <router-view></router-view> 
+          </el-main>
+        </el-container>
       </el-container>
     </div>
   </div>
@@ -59,12 +64,14 @@
 <script>
 
 import pageHeader from './components/pageHeader.vue';
+import pageHeaderNotLogin from './components/pageHeaderNotLogin.vue';
 import sideMenu from './components/sideMenu.vue';
 export default {
   name: 'app',
   components: {
       sideMenu,
       pageHeader,
+      pageHeaderNotLogin,
   },
   methods: {
     requireLogin() {

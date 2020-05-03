@@ -31,24 +31,8 @@
     </div>
 </template>
 
-<style scoped>
-    .collapse-title-wrapper {
-        display: flex;
-        width: 100%;
-    }
-    .collapse-title {
-        display: flex;
-    }
-
-    .collapse-action {
-        display: flex;
-        margin-left: auto;
-    }
-</style>
-
 <script>
-import { getAllQuestionaireStatus, getAllQuestionType, 
-        saveQuestionaire, getQuestionaire, getQuestions,
+import { getQuestionaire, getQuestions,
         submitResponse } from '@/apis/questionaire';
 import radioView from './radioView.vue';
 import checkboxView from './checkboxView.vue';

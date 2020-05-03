@@ -7,6 +7,7 @@ import home from '@/components/home';
 import questionaireList from '@/components/questionaireList';
 import questionaire from '@/components/questionaire';
 import questionaireView from '@/components/questionaireView';
+import questionaireResult from '@/components/questionaireResult';
  
 Vue.use(Router)
 
@@ -38,6 +39,10 @@ const router = new Router({
         {
             path: '/questionaireView/:id',
             component: questionaireView
+        },
+        {
+            path: '/admin/questionaireResult/:id',
+            component: questionaireResult
         }
     ]
 })
