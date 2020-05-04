@@ -1,7 +1,7 @@
 <template>
     <div id="home">
         <h2>Home</h2>
-        <line-chart :chart-data="datacollection"></line-chart>
+        <line-chart v-bind:chart-data="datacollection"></line-chart>
     </div>
 </template>
 
@@ -16,7 +16,10 @@ export default {
 
     data() {
         return {
-            datacollection: null,
+            datacollection: {
+              type: Object,
+              default: null
+            },
         }
     },
     mounted () {
@@ -30,11 +33,11 @@ export default {
           datasets: [
             {
               label: 'Data One',
-              backgroundColor: '#f87979',
+              backgroundColor: '#F56C6C',
               data: [this.getRandomInt(), this.getRandomInt()]
             }, {
               label: 'Data One',
-              backgroundColor: '#f87979',
+              backgroundColor: '#F56C6C',
               data: [this.getRandomInt(), this.getRandomInt()]
             }
           ]

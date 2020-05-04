@@ -1,19 +1,18 @@
 <template>
   <div>
-    <div class="small">
-        <bar-chart v-bind:chart-data="datacollection" :options="options"></bar-chart>
-    </div>
+    <p>{{question.text}}</p>
+    <bar-chart v-bind:chart-data="datacollection" :options="options"></bar-chart>
   </div>
 </template>
 
 <script>
-import BarChart from '../utils/BarChart.js';
+import BarChart from '../../utils/BarChart.js';
 export default {
-  name: 'radioView',
-  props: ['radioChoices', 'response'],
+  name: 'checkboxView',
+  props: ['question', 'response'],
   watch: { 
-    radioChoices: function(newVal, oldVal) { // watch it
-      console.log('radioChoices changed: ', newVal, ' | was: ', oldVal);
+    question: function(newVal, oldVal) { // watch it
+      console.log('question changed: ', newVal, ' | was: ', oldVal);
       this.fillChartData();
     },
     response: function(newVal, oldVal) { // watch it
@@ -34,7 +33,8 @@ export default {
 				scales: {
 					yAxes: [{
 						ticks: {
-							beginAtZero: true
+              beginAtZero: true,
+              stepSize: 1
 						},
 						gridLines: {
 							display: true
@@ -46,7 +46,8 @@ export default {
 						},
 						gridLines: {
 							display: false
-						}
+            },
+            barPercentage: 0.2
 					}]
 				},
 				legend: {
@@ -63,29 +64,25 @@ export default {
 				},
 				responsive: true,
 				maintainAspectRatio: false,
-				height: 200
+				height: 100
       }
     }
   },
   mounted: function() {
-    this.fillChartData();
   },
   methods: {
     fillChartData() {
-      let labels = [];
+      let labels = ['选', '不选'];
       let datasets = [{
         label: 'Data One',
-        backgroundColor: '#f87979',
-        data: []
+        backgroundColor: '#F56C6C',
+        data: [0, 0]
       }];
-      for (let rc of this.radioChoices) {
-        labels.push(rc.text);
-        datasets[0].data.push(0);
-      }
       for (let rt of this.response) {
-        const ind = this.radioChoices.findIndex(r => r.id == rt.radio);
-        if (ind >= 0) {
-          datasets[0].data[ind] += 1;
+        if (rt.checkbox) {
+          datasets[0].data[0] += 1;
+        } else {
+          datasets[0].data[1] += 1;
         }
       }
       this.datacollection = {

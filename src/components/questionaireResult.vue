@@ -10,7 +10,10 @@
             </el-tab-pane>
             <el-tab-pane>
                 <span slot="label"><i class="el-icon-tickets"></i> 个别</span>
-                <questionaire-result-single></questionaire-result-single>
+                <questionaire-result-single
+                v-bind:questionaire="questionaire"
+                :questionsWrapped="questionsWrapped"
+                :responses="responses"></questionaire-result-single>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -74,8 +77,8 @@ export default {
                         }
                         console.log(this.questionsWrapped);
                         getResponses(this.$route.params.id).then((res3) => {
-                            Object.assign(this.responses, res3.data);
-                            console.log(this.responses);
+                            this.responses = res3.data;
+                            console.log('responses', this.responses);
                             for (let r of this.responses) {
                                 for (let i of r.items) {
                                     const quesArr = this.questionsWrapped[i.order - 1];

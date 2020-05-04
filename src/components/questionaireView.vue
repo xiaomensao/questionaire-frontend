@@ -1,46 +1,26 @@
 <template>
     <div id="questionaireView">
-        <h3>{{questionaire.title}}</h3>
-        <el-form :model="questionaire" ref="questionaire">
-            <el-card shadow="always" v-for="(quesArr, ind) in questionsWrapped" v-bind:key="ind"
-            :name="ind + 1">
-                <div slot="header">
-                    {{(ind + 1) + ': ' + 
-                    quesArr.find(q => q.type == 1 || q.type == 2 || q.type == 3).text}}
-                </div>
-                <div v-for="(question, index) in quesArr" v-bind:key="index">
-                    <el-form-item v-if="question.type == 1">
-                        <el-input v-model="responseItemsWrapped[ind][index].text"></el-input>
-                    </el-form-item>
-                    <radio-view v-if="question.type == 2"
-                    v-bind:radioChoices="question.radioChoices"
-                    :response="responseItemsWrapped[ind][index]">
-                    </radio-view>
-                    <checkbox-view v-if="question.type == 4"
-                    v-bind:question="question"
-                    :response="responseItemsWrapped[ind][index]">
-                    </checkbox-view>
-                </div>
-            </el-card>
-            <el-card shadow="always">
-                <el-row>
-                    <el-button type="primary" @click="submit">提交</el-button>
-                </el-row>
-            </el-card>
-        </el-form>
+        <questionaire-view-component
+        v-bind:questionaire="questionaire"
+        :questionsWrapped="questionsWrapped"
+        :responseItemsWrapped="responseItemsWrapped"
+        :disabled="false"></questionaire-view-component>
+        <el-card shadow="always">
+            <el-row>
+                <el-button type="primary" @click="submit">提交</el-button>
+            </el-row>
+        </el-card>
     </div>
 </template>
 
 <script>
 import { getQuestionaire, getQuestions,
         submitResponse } from '@/apis/questionaire';
-import radioView from './radioView.vue';
-import checkboxView from './checkboxView.vue';
+import questionaireViewComponent from './questionaireViewComponent.vue';
 export default {
     name: 'questionaireView',
     components: {
-        radioView,
-        checkboxView,
+        questionaireViewComponent,
     },
 
     data() {

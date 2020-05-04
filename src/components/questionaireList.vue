@@ -3,7 +3,13 @@
         <h2>问卷列表</h2>
         <el-button type="primary" @click="createNewQuestionaire">添加新的问卷</el-button>
         <br/>
-        <p v-if="questionaireList.length == 0">目前没有问卷</p>
+        <p v-if="questionaireList.length == 0">
+            <el-alert type="info" :closable="false">
+                <div slot="title">
+                    目前没有问卷
+                </div>
+            </el-alert>
+        </p>
         <br/>
         <el-table :data="questionaireList" strip border style="width: 100%">
             <el-table-column fixed prop="title" label="标题"></el-table-column>

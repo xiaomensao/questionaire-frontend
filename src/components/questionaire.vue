@@ -94,8 +94,8 @@
 <script>
 import { getAllQuestionaireStatus, getAllQuestionType, 
         saveQuestionaire, getQuestionaire, getQuestions } from '@/apis/questionaire';
-import radioEdit from './radioEdit.vue';
-import checkboxEdit from './checkboxEdit.vue';
+import radioEdit from './edit/radioEdit.vue';
+import checkboxEdit from './edit/checkboxEdit.vue';
 export default {
     name: 'questionaire',
     components: {
