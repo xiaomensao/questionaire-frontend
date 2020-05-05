@@ -4,20 +4,24 @@
             <el-step v-for="status in questionaireStatus" v-bind:key="status.id" 
                 :title="status.name"></el-step>
         </el-steps>
-        <el-form :model="questionaire" ref="questionaire">
+        <el-form :model="questionaire" ref="questionaire" :disabled="this.questionaire.status != 1">
             <el-card shadow="always">
                 <div slot="header">
                     <h3>问卷信息</h3>
                 </div>
-                 <el-form-item label="问卷标题">
+                 <el-form-item label="标题">
                     <el-input placeholder="请输入问卷标题" v-model="questionaire.title"></el-input>
                 </el-form-item>
-                <el-form-item label="问卷状态">
+                <el-form-item label="简介">
+                    <el-input type="textarea" :rows="2"
+                    placeholder="请输入问卷简介" v-model="questionaire.description"></el-input>
+                </el-form-item>
+                <!-- <el-form-item label="问卷状态">
                     <el-select v-model="questionaire.status" placeholder="请选择问卷状态">
                         <el-option v-for="status in questionaireStatus" v-bind:key="status.id"
                         :label="status.name" :value="status.id"></el-option>
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
             </el-card>
             <el-card shadow="always">
                 <div slot="header">
@@ -65,14 +69,21 @@
                     <el-button type="primary" @click="createNewQuestion">创建一个新问题</el-button>
                 </el-form-item>
             </el-card>
-            <el-card shadow="always">
-                <el-row>
-                    <el-button type="primary" @click="submitQuestionaire">保存</el-button>
-                    <el-button type="primary" @click="goToView"
-                        v-if="this.$route.params.id > 0">预览</el-button>
-                </el-row>
-            </el-card>
         </el-form>
+        <el-card shadow="always">
+            <el-row>
+                <el-button type="primary" @click="submitQuestionaire(false)"
+                v-if="this.questionaire.status == 1">保存</el-button>
+                <el-button type="primary" @click="goToView"
+                v-if="this.$route.params.id > 0">预览</el-button>
+                <el-button type="primary" @click="submitQuestionaire(true)"
+                v-if="this.$route.params.id > 0 && this.questionaire.status == 1">
+                保存并发布</el-button>
+                <el-button type="primary" @click="updateQuestionaireStatus(3)"
+                v-if="this.$route.params.id > 0 && this.questionaire.status == 2">
+                关闭</el-button>
+            </el-row>
+        </el-card>
     </div>
 </template>
 
@@ -93,7 +104,8 @@
 
 <script>
 import { getAllQuestionaireStatus, getAllQuestionType, 
-        saveQuestionaire, getQuestionaire, getQuestions } from '@/apis/questionaire';
+        saveQuestionaire, getQuestionaire, getQuestions,
+        updateQuestionaire } from '@/apis/questionaire';
 import radioEdit from './edit/radioEdit.vue';
 import checkboxEdit from './edit/checkboxEdit.vue';
 export default {
@@ -107,6 +119,7 @@ export default {
         return {
             questionaire: {
                 title: '',
+                description: '',
                 id: -1,
                 status: 1,
                 questions: [],
@@ -186,21 +199,26 @@ export default {
             };
             quesArr.push(question);
         },
-        submitQuestionaire() {
+        submitQuestionaire(ifSend) {
+            let action = '保存';
+            if (ifSend) {
+                this.questionaire.status = 2;
+                action += '并发布';
+            }
             this.questionaire.questions = this.questionsWrappedToQuestions();
             console.log(this.questionaire);
             saveQuestionaire(this.questionaire).then((res) => {
                 console.log('saved!');
                 this.$notify({
                     title: '成功',
-                    message: '问卷保存成功！',
+                    message: '问卷' + action + '成功！',
                     type: 'success'
                 });
             }).catch(error => {
                 console.log(error.response);
                 this.$notify.error({
                     title: '错误',
-                    message: '问卷保存过程中有错误！'
+                    message: '问卷' + action + '过程中有错误！'
                 });
             });
         },
@@ -242,6 +260,16 @@ export default {
         goToView() {
             let viewRoute = this.$router.resolve("/questionaireView/" + this.$route.params.id);
             window.open(viewRoute.href, '_blank');
+        },
+        updateQuestionaireStatus(statusId) {
+            let item = {
+                status: statusId
+            };
+            updateQuestionaire(this.questionaire.id, item).then((res) => {
+                console.log(res);
+            }).catch(error => {
+                console.log(error);
+            });
         }
     },
     

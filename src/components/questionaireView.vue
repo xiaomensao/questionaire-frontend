@@ -5,11 +5,18 @@
         :questionsWrapped="questionsWrapped"
         :responseItemsWrapped="responseItemsWrapped"
         :disabled="false"></questionaire-view-component>
-        <el-card shadow="always">
+        <el-card shadow="always" v-if="questionaire.id > 0">
             <el-row>
                 <el-button type="primary" @click="submit">提交</el-button>
             </el-row>
         </el-card>
+        <p v-if="questionaire.id < 0">
+            <el-alert type="info" :closable="false">
+                <div slot="title">
+                    该问卷还未发布或者已经关闭。
+                </div>
+            </el-alert>
+        </p>
     </div>
 </template>
 

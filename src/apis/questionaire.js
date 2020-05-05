@@ -31,3 +31,7 @@ export function submitResponse(response) {
 export function getResponses(id) {
     return jsonRequest.get('response/?questionaireId=' + id);
 }
+
+export function updateQuestionaire(id, item) {
+    return jsonRequest.put('questionaire/' + id + '/', item);
+}

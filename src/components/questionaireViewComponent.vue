@@ -1,6 +1,7 @@
 <template>
     <div id="questionaireViewComponent">
         <h3>{{questionaire.title}}</h3>
+        <p>{{questionaire.description}}</p>
         <el-form :model="questionaire" ref="questionaire" v-bind:disabled="disabled">
             <el-card shadow="always" v-for="(quesArr, ind) in questionsWrapped" v-bind:key="ind"
             :name="ind + 1">
