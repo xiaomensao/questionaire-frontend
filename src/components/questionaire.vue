@@ -49,7 +49,9 @@
                                     :label="type.name" :value="type.id"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item v-if="question.type <= 3">
+                            <el-form-item v-if="question.type <= 3"
+                            :rules="fieldRequiredRule(question.text, '此项不能为空')"
+                            :prop="'question_text_prop_' + ind + '_' + index">
                                 <el-input placeholder="请输入题目" v-model="question.text"></el-input>
                             </el-form-item>
                             <radio-edit v-if="question.type == 2" v-bind:radioChoices="question.radioChoices">
@@ -108,6 +110,7 @@ import { getAllQuestionaireStatus, getAllQuestionType,
         updateQuestionaire } from '@/apis/questionaire';
 import radioEdit from './edit/radioEdit.vue';
 import checkboxEdit from './edit/checkboxEdit.vue';
+import { fieldRequiredRule } from '../utils/formValidation.js';
 export default {
     name: 'questionaire',
     components: {
@@ -138,6 +141,7 @@ export default {
     },
 
     methods: {
+        fieldRequiredRule,
         loadQuestionaire() {
             if (this.$route.params.id > 0) {
                 getQuestionaire(this.$route.params.id).then((res) => {
@@ -270,7 +274,7 @@ export default {
             }).catch(error => {
                 console.log(error);
             });
-        }
+        },
     },
     
 }
