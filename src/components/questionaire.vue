@@ -9,7 +9,9 @@
                 <div slot="header">
                     <h3>问卷信息</h3>
                 </div>
-                 <el-form-item label="标题">
+                <el-form-item label="标题"
+                :rules="fieldRequiredRule(questionaire.title, '此项不能为空')"
+                :prop="'title'">
                     <el-input placeholder="请输入问卷标题" v-model="questionaire.title"></el-input>
                 </el-form-item>
                 <el-form-item label="简介">
@@ -44,7 +46,7 @@
                         <div v-for="(question, index) in quesArr" v-bind:key="index">
                             <el-form-item label="题目类型" v-if="question.type <= 3">
                                 <el-select v-model="question.type" placeholder="题目类型"
-                                @change="onSelectedTypeChange($event, order)">
+                                @change="onSelectedTypeChange($event, ind)">
                                     <el-option v-for="type in parentQuestionType" v-bind:key="type.id"
                                     :label="type.name" :value="type.id"></el-option>
                                 </el-select>
@@ -238,6 +240,7 @@ export default {
                     q.radioChoices = [];
                 });
             }
+            console.log(this.questionsWrapped);
         },
         questionsWrappedToQuestions() {
             let questions = [];
