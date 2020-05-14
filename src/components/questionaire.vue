@@ -11,7 +11,8 @@
                 </div>
                 <el-form-item label="标题"
                 :rules="fieldRequiredRule(questionaire.title, '此项不能为空')"
-                :prop="'title'">
+                :prop="'title'"
+                class="is-required">
                     <el-input placeholder="请输入问卷标题" v-model="questionaire.title"></el-input>
                 </el-form-item>
                 <el-form-item label="简介">
@@ -36,7 +37,7 @@
                             <div class="collapse-title-wrapper">
                                 <div class="collapse-title">
                                     {{'题目' + (ind + 1) + ': ' + 
-                                    quesArr.find(q => q.type == 1 || q.type == 2 || q.type == 3).text}}
+                                    quesArr.find(q => [1, 2, 3].includes(q.type)).text}}
                                 </div>
                                 <div class="collapse-action">
                                     <el-button @click="deleteQuestion(ind)" type="text" size="small">删除</el-button>
@@ -63,8 +64,15 @@
                                 <el-button v-if="question.type == 3" type="primary" 
                                 @click="createNewCheckbox(quesArr)">创建一个新选项</el-button>
                             </el-form-item>
-                            <checkbox-edit v-if="question.type == 4" v-bind:question="question">
-                            </checkbox-edit>
+                            <el-row v-if="question.type == 4">
+                                <el-col :xs="24" :md="12">
+                                    <checkbox-edit v-bind:question="question">
+                                    </checkbox-edit>
+                                </el-col>
+                                <el-col :xs="24" :md="12">
+                                    <el-button type="danger" icon="el-icon-close" @click="removeCheckbox(quesArr, index)"></el-button>
+                                </el-col>
+                            </el-row>
                         </div>
                     </el-collapse-item>
                 </el-collapse>
@@ -206,27 +214,37 @@ export default {
             quesArr.push(question);
         },
         submitQuestionaire(ifSend) {
-            let action = '保存';
-            if (ifSend) {
-                this.questionaire.status = 2;
-                action += '并发布';
-            }
-            this.questionaire.questions = this.questionsWrappedToQuestions();
-            console.log(this.questionaire);
-            saveQuestionaire(this.questionaire).then((res) => {
-                console.log('saved!');
-                this.$notify({
-                    title: '成功',
-                    message: '问卷' + action + '成功！',
-                    type: 'success'
-                });
-            }).catch(error => {
-                console.log(error.response);
-                this.$notify.error({
-                    title: '错误',
-                    message: '问卷' + action + '过程中有错误！'
-                });
-            });
+            this.$refs['questionaire'].validate((valid) => {
+                if (valid) {
+                    let action = '保存';
+                    if (ifSend) {
+                        this.questionaire.status = 2;
+                        action += '并发布';
+                    }
+                    this.questionaire.questions = this.questionsWrappedToQuestions();
+                    console.log(this.questionaire);
+                    saveQuestionaire(this.questionaire).then((res) => {
+                        console.log('saved!');
+                        this.$notify({
+                            title: '成功',
+                            message: '问卷' + action + '成功！',
+                            type: 'success'
+                        });
+                    }).catch(error => {
+                        console.log(error.response);
+                        this.$notify.error({
+                            title: '错误',
+                            message: '问卷' + action + '过程中有错误！'
+                        });
+                    });
+                } else {
+                    this.$notify.error({
+                        title: '错误',
+                        message: '有内容未填写！'
+                    });
+                    return false;
+                }
+            }); 
         },
         onSelectedTypeChange($event, index) {
             let newType = parseInt($event);
@@ -278,6 +296,11 @@ export default {
                 console.log(error);
             });
         },
+        removeCheckbox(quesArr, index) {
+            if (confirm('你确定要删除该选项吗？')) {
+                quesArr.splice(index, 1);
+            }
+        }
     },
     
 }

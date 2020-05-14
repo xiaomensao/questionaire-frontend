@@ -7,7 +7,7 @@
             :name="ind + 1">
                 <div slot="header">
                     {{(ind + 1) + ': ' + 
-                    quesArr.find(q => q.type == 1 || q.type == 2 || q.type == 3).text}}
+                    quesArr.find(q => [1, 2, 3].includes(q.type)).text}}
                 </div>
                 <div v-for="(question, index) in quesArr" v-bind:key="index">
                     <el-form-item v-if="question.type == 1">

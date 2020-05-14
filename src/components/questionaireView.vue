@@ -4,8 +4,8 @@
         v-bind:questionaire="questionaire"
         :questionsWrapped="questionsWrapped"
         :responseItemsWrapped="responseItemsWrapped"
-        :disabled="false"></questionaire-view-component>
-        <el-card shadow="always" v-if="questionaire.id > 0">
+        :disabled="disabled"></questionaire-view-component>
+        <el-card shadow="always" v-if="questionaire.id > 0 && questionaire.status == 2">
             <el-row>
                 <el-button type="primary" @click="submit">提交</el-button>
             </el-row>
@@ -44,10 +44,12 @@ export default {
             maxOrder: 0,
             questionsWrapped: [],
             responseItemsWrapped: [],
+            disabled: false,
         }
     },
 
     mounted: function() {
+        this.disabled = this.$route.query.disabled == 1;
         this.loadQuestionaire();
     },
 
